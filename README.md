@@ -83,37 +83,29 @@ People who import other packages, most commonly imports from eclipse.org or netb
 For file input example, here is a file from a recent homework and how it would look as input. Note that the node names are strings, not single characters. Note that for nodes with outdegree zero, the line of adjacent nodes is non-existent.
 
 S S n
-
 B 1 E 2
 
 B N n
-
 C 2 F 3
 
 C N n
-
 D 2 GA 4
 
 D N n
-
 GA 1
 
 E N n
-
 B 1 F 3 H 6
 
 F N n
-
 I 3 GA 3 C 1
 
 GA N g
 
 H N n
-
 I 2 GB 2 F 1
 
 I N n
-
 GA 2 GB 2
 
 GB N g
