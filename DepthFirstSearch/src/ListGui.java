@@ -23,10 +23,14 @@ public class ListGui extends JFrame {
 	
 	private File selectedFile;
 	
-	static ArrayList<Node> nodeList;
 	Node node;
 	SubNode subNode;
+
+	//Holds all nodes
+	static ArrayList<Node> nodeList;
 	
+	//Search Buffer
+	static ArrayList<String> searchBuffer;
 	
 	private JPanel contentPane;
 	private JTextField fileSelectedTextField;
@@ -37,7 +41,11 @@ public class ListGui extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		//Initialize the arrays
 		nodeList = new ArrayList<Node>();
+		searchBuffer = new ArrayList<String>();
+		
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
