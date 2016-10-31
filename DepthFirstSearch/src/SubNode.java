@@ -5,6 +5,8 @@ public class SubNode {
 	private int weight = 0;
 
 	private boolean isGoalNode = false;
+	
+	private boolean wasVisited = false;
 
 	public SubNode(String name, int weight) {
 		this.name = name;
@@ -33,6 +35,14 @@ public class SubNode {
 
 	public void setGoalNode(boolean isGoalNode) {
 		this.isGoalNode = isGoalNode;
+	}
+
+	public boolean getWasVisited() {
+		return wasVisited;
+	}
+
+	public void setWasVisited(boolean wasVisited) {
+		this.wasVisited = wasVisited;
 	}
 	
 	

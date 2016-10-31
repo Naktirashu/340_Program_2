@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Stack;
 import java.awt.event.ActionEvent;
 
 public class ListGui extends JFrame {
@@ -30,7 +31,7 @@ public class ListGui extends JFrame {
 	static ArrayList<Node> nodeList;
 	
 	//Search Buffer
-	static ArrayList<String> searchBuffer;
+	static Stack<Node> stack;
 	
 	private JPanel contentPane;
 	private JTextField fileSelectedTextField;
@@ -43,7 +44,7 @@ public class ListGui extends JFrame {
 	public static void main(String[] args) {
 		//Initialize the arrays
 		nodeList = new ArrayList<Node>();
-		searchBuffer = new ArrayList<String>();
+		stack = new Stack<Node>();
 		
 		
 		EventQueue.invokeLater(new Runnable() {
@@ -92,9 +93,11 @@ public class ListGui extends JFrame {
 		JButton btnDepthFirst = new JButton("Depth First");
 		btnDepthFirst.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//FIXME
-				System.out.println("Not Yet Implemented!");
+				depthFirsthSearch();
+
 			}
+
+		
 		});
 		btnDepthFirst.setBounds(10, 113, 172, 38);
 		contentPane.add(btnDepthFirst);
@@ -251,6 +254,20 @@ public class ListGui extends JFrame {
 				sortListByAlphabetic(nodeList.get(i) );
 				sortListByWeight(nodeList.get(i));
 				
+				//For all nodes
+				for (Node node : nodeList) {
+					//Look at all its subnodes
+					for(SubNode subNode : node.getSubNodeArray()) {
+						//Find the Node object that matches the subNode and add the ref to the neighberNodeArray
+						for(int j = 0; j< nodeList.size(); j++){
+							if(subNode.getName().equals(nodeList.get(j).getName())){
+								node.getNeighberNodeArray().add(nodeList.get(j));								
+							}
+							
+						}
+					}
+				}
+				
 				//Print the nodes, and subNodes
 				System.out.println("Node Name: " + nodeList.get(i).getName() + "(Has Previous: "+ nodeList.get(i).isHasPrevious() + ")");
 				for (int j = 0; j < nodeList.get(i).getSubNodeArray().size(); j++){
@@ -263,38 +280,72 @@ public class ListGui extends JFrame {
 		}
 		
 	}
-/**
- * Sort by weight of SubNode (Source From: Program 1)	
- * @param node
- */
-public static void sortListByWeight(Node node){
-		
-		//Sort the subnodes by weight
+	/**
+	 * Sort by weight of SubNode (Source From: Program 1)	
+	 * @param node
+	 */
+	public static void sortListByWeight(Node node){
+			
+			//Sort the subnodes by weight
+			Collections.sort(node.getSubNodeArray(), new Comparator<SubNode>() {
+	
+			    @Override
+			    public int compare(SubNode s1, SubNode s2) {
+			        if (s1.getWeight() < s2.getWeight())
+			            return -1;
+			        else if (s1.getWeight() > s2.getWeight())
+			            return 1;
+			        return 0;
+			    }
+	
+			});
+		}
+	/**
+	 * Sort Alphabetically by sub node name (Source from: http://stackoverflow.com/questions/19471005/sorting-an-arraylist-of-objects-alphabetically) 
+	 * @param node
+	 */
+	public static void sortListByAlphabetic(Node node){
 		Collections.sort(node.getSubNodeArray(), new Comparator<SubNode>() {
-
-		    @Override
 		    public int compare(SubNode s1, SubNode s2) {
-		        if (s1.getWeight() < s2.getWeight())
-		            return -1;
-		        else if (s1.getWeight() > s2.getWeight())
-		            return 1;
-		        return 0;
+		        return s1.getName().compareTo(s2.getName());
 		    }
-
 		});
 	}
-/**
- * Sort Alphabetically by sub node name (Source from: http://stackoverflow.com/questions/19471005/sorting-an-arraylist-of-objects-alphabetically) 
- * @param node
- */
-public static void sortListByAlphabetic(Node node){
-	Collections.sort(node.getSubNodeArray(), new Comparator<SubNode>() {
-	    public int compare(SubNode s1, SubNode s2) {
-	        return s1.getName().compareTo(s2.getName());
-	    }
-	});
-}
+	
+	/**
+	 * Preforms Depth FIrst Search (Source from : YouTUbe Balazs Hoczer @ https://www.youtube.com/watch?v=knbGy2tED-Y)
+	 */
+	private void depthFirsthSearch() {
+		System.out.println("Depth First Search: ");
+		
+		for (Node node : nodeList) {
+			if( !node.isVisted()){
+				node.setVisted(true);
+				dfsWithStack(node);
+			}
+		}
+	}
 
+	/**
+	 * Preforms Depth FIrst Search (Source from : YouTUbe Balazs Hoczer @ https://www.youtube.com/watch?v=knbGy2tED-Y)
+	 */
+	private void dfsWithStack(Node node) {
+		stack.add(node);
+		node.setVisted(true);
+		
+		while(!stack.isEmpty() ){
+			Node actualNode = stack.pop();
+			System.out.print(actualNode.getName() + " ");
+			
+			for (Node node2 : node.getNeighberNodeArray()) {
+				if(!node2.isVisted()){
+					node2.setVisted(true);
+					stack.push(node2);
+				}
+			}
+		}
+		
+	}
 
 	public File getSelectedFile() {
 		return selectedFile;

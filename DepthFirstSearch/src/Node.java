@@ -8,6 +8,7 @@ public class Node {
 
 	private String name = "";
 	private ArrayList<SubNode> subNodeArray;
+	private ArrayList<Node> neighberNodeArray;
 	
 	private boolean isStartNode = false;
 	private boolean isGoalNode = false;
@@ -23,6 +24,7 @@ public class Node {
 		this.isGoalNode = isGoalNode;
 		this.hasPrevious = hasPrevious;
 		subNodeArray = new ArrayList<SubNode>();
+		neighberNodeArray = new ArrayList<Node>();
 		
 	}
 
@@ -72,6 +74,14 @@ public class Node {
 
 	public void setSubNodeArray(ArrayList<SubNode> subNodeArray) {
 		this.subNodeArray = subNodeArray;
+	}
+
+	public ArrayList<Node> getNeighberNodeArray() {
+		return neighberNodeArray;
+	}
+
+	public void setNeighberNodeArray(ArrayList<Node> neighberNodeArray) {
+		this.neighberNodeArray = neighberNodeArray;
 	}
 	
 	
