@@ -354,16 +354,19 @@ public class ListGui extends JFrame {
 		
 		while(!stack.isEmpty() ){
 			Node actualNode = stack.pop();
-			//System.out.println("Setting actualNode to :" + actualNode);
+			//System.out.println("Setting actualNode to :" + actualNode.getName());
 			System.out.print(actualNode.getName() + " ");
 			if(actualNode.isGoalNode()){
 				System.out.println("(Goal!)");
+				
 			}
 			
 			for (Node node2 : node.getNeighberNodeArray()) {
+				
 				if(!node2.isVisted()){
-					node2.setVisted(true);
-					stack.push(node2);
+					dfsWithStack(node2);
+					//node2.setVisted(true);
+					//stack.push(node2);
 				}
 			}
 		}
