@@ -256,9 +256,23 @@ public class ListGui extends JFrame {
 				sortListByAlphabetic(nodeList.get(i) );
 				sortListByWeight(nodeList.get(i));
 				
+				
+				//Print the nodes, and subNodes
+				System.out.println("Node Name: " + nodeList.get(i).getName() + "(Has Previous: "+ nodeList.get(i).isHasPrevious()+ ", IsStart: " + nodeList.get(i).isStartNode() + ", IsGoal: " + nodeList.get(i).isGoalNode()+")");
+				for (int j = 0; j < nodeList.get(i).getSubNodeArray().size(); j++){
+					System.out.println("     SubNode: " +nodeList.get(i).getSubNodeArray().get(j).getName());
+					System.out.println("        -Weight: " + nodeList.get(i).getSubNodeArray().get(j).getWeight());
+				}
+				
+			}
+				
+				
+				System.out.println("\n*********************************** \n");
+				
 				//For all nodes
 				for (Node node : nodeList) {
 					//Look at all its subnodes
+					System.out.println("SubNodeArray Length: " + node.getSubNodeArray().size());
 					for(SubNode subNode : node.getSubNodeArray()) {
 						//Find the Node object that matches the subNode and add the ref to the neighberNodeArray
 						for(int j = 0; j< nodeList.size(); j++){
@@ -268,20 +282,18 @@ public class ListGui extends JFrame {
 							
 						}
 					}
+					for(int j = 0; j < node.getNeighberNodeArray().size(); j++){
+						System.out.println("Node " + node.getName() + " Neighbor List ["+ j + "]: " + node.getNeighberNodeArray().get(j).getName());						
+					}
 				}
 				
-				//Print the nodes, and subNodes
-				System.out.println("Node Name: " + nodeList.get(i).getName() + "(Has Previous: "+ nodeList.get(i).isHasPrevious()+ ", IsStart: " + nodeList.get(i).isStartNode() + ", IsGoal: " + nodeList.get(i).isGoalNode()+")");
-				for (int j = 0; j < nodeList.get(i).getSubNodeArray().size(); j++){
-					System.out.println("     SubNode: " +nodeList.get(i).getSubNodeArray().get(j).getName());
-					System.out.println("        -Weight: " + nodeList.get(i).getSubNodeArray().get(j).getWeight());
-				}
-			}
+				
 		} catch (IOException io) {
 			io.printStackTrace();
 		}
 		
 	}
+	
 	/**
 	 * Sort by weight of SubNode (Source From: Program 1)	
 	 * @param node
@@ -302,6 +314,7 @@ public class ListGui extends JFrame {
 	
 			});
 		}
+	
 	/**
 	 * Sort Alphabetically by sub node name (Source from: http://stackoverflow.com/questions/19471005/sorting-an-arraylist-of-objects-alphabetically) 
 	 * @param node
@@ -313,6 +326,8 @@ public class ListGui extends JFrame {
 		    }
 		});
 	}
+	
+
 	
 	/**
 	 * Performs Depth FIrst Search (Source from : YouTUbe Balazs Hoczer @ https://www.youtube.com/watch?v=knbGy2tED-Y)
@@ -333,7 +348,7 @@ public class ListGui extends JFrame {
 	 * Performs Depth FIrst Search (Source from : YouTUbe Balazs Hoczer @ https://www.youtube.com/watch?v=knbGy2tED-Y)
 	 */
 	private void dfsWithStack(Node node) {
-		stack.add(node);
+		stack.push(node);
 		//System.out.println("Stack, adding node: " + node.getName());
 		node.setVisted(true);
 		
