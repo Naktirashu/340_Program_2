@@ -315,7 +315,7 @@ public class ListGui extends JFrame {
 	}
 	
 	/**
-	 * Preforms Depth FIrst Search (Source from : YouTUbe Balazs Hoczer @ https://www.youtube.com/watch?v=knbGy2tED-Y)
+	 * Performs Depth FIrst Search (Source from : YouTUbe Balazs Hoczer @ https://www.youtube.com/watch?v=knbGy2tED-Y)
 	 */
 	private void depthFirsthSearch() {
 		System.out.println("Depth First Search: ");
@@ -330,7 +330,7 @@ public class ListGui extends JFrame {
 	}
 
 	/**
-	 * Preforms Depth FIrst Search (Source from : YouTUbe Balazs Hoczer @ https://www.youtube.com/watch?v=knbGy2tED-Y)
+	 * Performs Depth FIrst Search (Source from : YouTUbe Balazs Hoczer @ https://www.youtube.com/watch?v=knbGy2tED-Y)
 	 */
 	private void dfsWithStack(Node node) {
 		stack.add(node);
