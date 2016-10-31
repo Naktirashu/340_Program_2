@@ -219,6 +219,8 @@ public class ListGui extends JFrame {
 						
 						nodeList.add(new Node(nodeName, isStart, isGoal, !isStart));
 						
+						//reset isGoal
+						isGoal = false;
 						//FIXME, delete after debug not needed
 						/*for (int j = 0 ; j < tmpArray.length; j++){
 							System.out.println("tmpArray[" + j + "]= " + tmpArray[j]);
@@ -269,7 +271,7 @@ public class ListGui extends JFrame {
 				}
 				
 				//Print the nodes, and subNodes
-				System.out.println("Node Name: " + nodeList.get(i).getName() + "(Has Previous: "+ nodeList.get(i).isHasPrevious() + ")");
+				System.out.println("Node Name: " + nodeList.get(i).getName() + "(Has Previous: "+ nodeList.get(i).isHasPrevious()+ ", IsStart: " + nodeList.get(i).isStartNode() + ", IsGoal: " + nodeList.get(i).isGoalNode()+")");
 				for (int j = 0; j < nodeList.get(i).getSubNodeArray().size(); j++){
 					System.out.println("     SubNode: " +nodeList.get(i).getSubNodeArray().get(j).getName());
 					System.out.println("        -Weight: " + nodeList.get(i).getSubNodeArray().get(j).getWeight());
@@ -321,6 +323,7 @@ public class ListGui extends JFrame {
 		for (Node node : nodeList) {
 			if( !node.isVisted()){
 				node.setVisted(true);
+				//System.out.println("Setting visted for Node: " + node.getName());
 				dfsWithStack(node);
 			}
 		}
@@ -331,11 +334,16 @@ public class ListGui extends JFrame {
 	 */
 	private void dfsWithStack(Node node) {
 		stack.add(node);
+		//System.out.println("Stack, adding node: " + node.getName());
 		node.setVisted(true);
 		
 		while(!stack.isEmpty() ){
 			Node actualNode = stack.pop();
+			//System.out.println("Setting actualNode to :" + actualNode);
 			System.out.print(actualNode.getName() + " ");
+			if(actualNode.isGoalNode()){
+				System.out.println("(Goal!)");
+			}
 			
 			for (Node node2 : node.getNeighberNodeArray()) {
 				if(!node2.isVisted()){
