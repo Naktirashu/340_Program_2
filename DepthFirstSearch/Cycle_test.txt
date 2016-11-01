@@ -1,0 +1,11 @@
+S S n
+B 1
+
+B N n
+C 2
+
+C N n
+D 2
+
+D N n
+S 1
