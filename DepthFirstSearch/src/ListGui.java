@@ -93,6 +93,7 @@ public class ListGui extends JFrame {
 		JButton btnDepthFirst = new JButton("Depth First");
 		btnDepthFirst.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				depthFirsthSearch();
 
 			}
@@ -192,15 +193,16 @@ public class ListGui extends JFrame {
 							isGoal = true;	
 						}
 						
-						nodeList.add(new Node(nodeName, isStart, isGoal, !isStart));
+						if(isStart){
+							//if its a start node, put it at the beginning
+							nodeList.add(0, new Node(nodeName, isStart, isGoal, !isStart));							
+						}else{
+							nodeList.add(new Node(nodeName, isStart, isGoal, !isStart));	
+						}
 						
 						//reset isStart
 						isStart = false;
 						
-						//FIXME delete when debug is not needed
-						/*for (int j = 0 ; j < tmpArray.length; j++){
-							System.out.println("tmpArray[" + j + "]= " + tmpArray[j]);
-						}*/
 						
 					}//this is for goal nodes
 					else if(line.length() == 6){
