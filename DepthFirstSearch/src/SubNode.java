@@ -1,6 +1,6 @@
 
 public class SubNode {
-
+	//test comment
 	private String name = "";
 	private int weight = 0;
 
