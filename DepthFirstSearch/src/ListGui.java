@@ -37,6 +37,11 @@ public class ListGui extends JFrame {
 	private JTextField fileSelectedTextField;
 	private JTextField depthTextField;
 	private JTextField incrementTextField;
+	
+	private int initialDepth = 0; 
+	private int incrementLevel = 0;
+	
+	private int currentDepth = 0;
 
 	/**
 	 * Launch the application.
@@ -118,8 +123,9 @@ public class ListGui extends JFrame {
 		JButton btnIterativeDeepening = new JButton("Iterative Deepening");
 		btnIterativeDeepening.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//FIXME
-				System.out.println("Not Yet Implemented!");
+				initialDepth = Integer.parseInt(depthTextField.getText());
+				incrementLevel = Integer.parseInt(incrementTextField.getText());
+				iterativeDeepeningSearch();
 			}
 		});
 		btnIterativeDeepening.setBounds(10, 162, 172, 38);
@@ -342,6 +348,10 @@ public class ListGui extends JFrame {
 				dfsWithStack(node);
 			}
 		}
+		//FIXME may want to take this out later
+		for (Node node2 : nodeList) {
+			node2.setVisted(false);	
+		}
 	}
 
 	/**
@@ -365,6 +375,57 @@ public class ListGui extends JFrame {
 				
 				if(!node2.isVisted()){
 					dfsWithStack(node2);
+					//node2.setVisted(true);
+					//stack.push(node2);
+				}
+			}
+		}
+		
+	}
+	
+	/**
+	 * Performs Iterative Deepening Depth First Search
+	 */
+	private void iterativeDeepeningSearch() {
+		System.out.println("Iterative Deepening Search: ");
+		
+		for (Node node : nodeList) {
+			if( !node.isVisted()){
+				node.setVisted(true);
+				//System.out.println("Setting visted for Node: " + node.getName());
+				iterativeDeepeningWithStack(node);
+			}
+		}
+		//FIXME may want to take this out later
+		for (Node node2 : nodeList) {
+			node2.setVisted(false);	
+		}
+	}
+
+	/**
+	 * Performs Iterative Deepening Depth First Search
+	 */
+	private void iterativeDeepeningWithStack(Node node) {
+		stack.push(node);
+		//System.out.println("Stack, adding node: " + node.getName());
+		node.setVisted(true);
+		
+		
+		while(!stack.isEmpty() ){
+			Node actualNode = stack.pop();
+			//System.out.println("Setting actualNode to :" + actualNode.getName());
+			System.out.print(actualNode.getName() + " ");
+			
+			if(actualNode.isGoalNode()){
+				System.out.println("(Goal!)");
+				
+			}
+			
+			for (Node node2 : node.getNeighberNodeArray()) {
+				//System.out.println("Node2: " + node2.getName());
+				if(!node2.isVisted()){
+					System.out.println("Calling iterativeDeepening with: " + node2.getName());
+					iterativeDeepeningWithStack(node2);
 					//node2.setVisted(true);
 					//stack.push(node2);
 				}
