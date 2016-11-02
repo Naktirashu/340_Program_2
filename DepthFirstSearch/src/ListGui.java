@@ -22,7 +22,8 @@ import java.util.Stack;
 import java.awt.event.ActionEvent;
 
 public class ListGui extends JFrame {
-	//test comment
+	
+	//store the file selected from GUI
 	private File selectedFile;
 	
 	Node node;
@@ -39,20 +40,24 @@ public class ListGui extends JFrame {
 	private JTextField depthTextField;
 	private JTextField incrementTextField;
 	
+	//our starting depth on search
 	private int initialDepth = 0; 
+	//what we wish to increment by
 	private int incrementLevel = 0;
-	
+	//where we are in the search
 	private int currentDepth = 0;
-
+	//stores the edge weight of subnode
 	private int subNodeValue = 0;
-
+	//goal found at end of iteration
 	private boolean goalReached = false;
-
+	//goal found in iteration
 	private boolean tmpGoalReached = false;
-
+	//stores goal names found during search
 	private String goalName = "";
-
+	//used for printing search header
 	private boolean firstRun = true;
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -214,6 +219,7 @@ public class ListGui extends JFrame {
 							//if its a start node, put it at the beginning
 							nodeList.add(0, new Node(nodeName, isStart, isGoal, !isStart));							
 						}else{
+							//else add it to the list as normal
 							nodeList.add(new Node(nodeName, isStart, isGoal, !isStart));	
 						}
 						
@@ -231,15 +237,16 @@ public class ListGui extends JFrame {
 						if (tmpArray[1].equals(start)){
 							isStart = true;
 						}
-						
+						//see if its a goal node, it should be
 						if (tmpArray[2].equals(goal)){
 							isGoal = true;	
 						}
-						
+						//add to the list as normal
 						nodeList.add(new Node(nodeName, isStart, isGoal, !isStart));
 						
 						//reset isGoal
 						isGoal = false;
+						
 						//FIXME, delete after debug not needed
 						/*for (int j = 0 ; j < tmpArray.length; j++){
 							System.out.println("tmpArray[" + j + "]= " + tmpArray[j]);
@@ -474,7 +481,7 @@ public class ListGui extends JFrame {
 			}
 			
 			if(actualNode.isGoalNode()){
-				System.out.println("(Goal!)");
+				System.out.print("(Goal!)");
 				goalReached = true;
 				tmpGoalReached = true;
 				goalName = actualNode.getName();
