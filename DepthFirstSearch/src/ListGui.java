@@ -46,6 +46,8 @@ public class ListGui extends JFrame {
 
 	private int subNodeValue = 0;
 
+	private boolean goalReached = false;
+
 	/**
 	 * Launch the application.
 	 */
@@ -422,10 +424,15 @@ public class ListGui extends JFrame {
 				}
 				
 				iterativeDeepeningWithStack(node);
-				System.out.println("\n");
+				
+				if(!goalReached){
+					System.out.print("(X)");
+				}
+				goalReached= false;
 				
 				currentDepth = 0;
 			}
+			System.out.print("\n");
 		}
 		
 		//iterativeDeepeningWithStack(nodeList.get(0));
@@ -447,36 +454,43 @@ public class ListGui extends JFrame {
 		while(!stack.isEmpty() ){
 			Node actualNode = stack.pop();
 			//System.out.println("Setting actualNode to :" + actualNode.getName());
-			System.out.print(actualNode.getName() + " ");
+			if(currentDepth <= initialDepth){
+				System.out.print(actualNode.getName() + " ");				
+			}
 			
 			if(actualNode.isGoalNode()){
 				System.out.println("(Goal!)");
-				break;
+				goalReached = true;
+				//System.out.print("\n");
 				
 			}
-			
-			for (Node node2 : node.getNeighberNodeArray()) {
-			//Node node2 = actualNode.getNeighberNodeArray().get(0);
-				//System.out.println("Node2: " + node2.getName());
-				if(!node2.isVisted() && (currentDepth < initialDepth)){
-					//System.out.println("Calling iterativeDeepening with: " + node2.getName());
-					
-					for(int i = 0 ; i < actualNode.getSubNodeArray().size(); i++){
-						if (node2.getName().equals(actualNode.getSubNodeArray().get(i).getName())){
-							
-							//System.out.println("SubNode " + node2.getName() + " value =" + actualNode.getSubNodeArray().get(i).getWeight());
-							subNodeValue  = actualNode.getSubNodeArray().get(i).getWeight();
+			if(!goalReached){
+				
+				for (Node node2 : node.getNeighberNodeArray()) {
+					//Node node2 = actualNode.getNeighberNodeArray().get(0);
+					//System.out.println("Node2: " + node2.getName());
+					if(!node2.isVisted() && (currentDepth < initialDepth)){
+						//System.out.println("Calling iterativeDeepening with: " + node2.getName());
+						
+						for(int i = 0 ; i < actualNode.getSubNodeArray().size(); i++){
+							if (node2.getName().equals(actualNode.getSubNodeArray().get(i).getName())){
+								
+								//System.out.println("SubNode " + node2.getName() + " value =" + actualNode.getSubNodeArray().get(i).getWeight());
+								subNodeValue  = actualNode.getSubNodeArray().get(i).getWeight();
+							}
 						}
+						
+						//System.out.println((subNodeValue + currentDepth) + " <= " + initialDepth );
+						if((subNodeValue + currentDepth) <= initialDepth){
+							currentDepth += subNodeValue;
+							iterativeDeepeningWithStack(node2);						
+						}
+						
+						//node2.setVisted(true);
+						//stack.push(node2);
 					}
-					
-					//System.out.println((subNodeValue + currentDepth) + " <= " + initialDepth );
-					if((subNodeValue + currentDepth) <= initialDepth){
-						currentDepth += subNodeValue;
-						iterativeDeepeningWithStack(node2);						
-					}
-					//node2.setVisted(true);
-					//stack.push(node2);
 				}
+				
 			}
 			
 		}
