@@ -1,4 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 //example on building the adj list
 //http://stackoverflow.com/questions/14783831/java-implementation-of-adjacency-list
@@ -8,7 +11,12 @@ public class Node {
 
 	private String name = "";
 	private ArrayList<SubNode> subNodeArray;
-	private ArrayList<Node> neighberNodeArray;
+	
+	HashMap neighborMap;
+	Set set;
+	Iterator iterator;
+	
+	private ArrayList<Node> neighborNodeArray;
 	
 	private boolean isStartNode = false;
 	private boolean isGoalNode = false;
@@ -24,7 +32,15 @@ public class Node {
 		this.isGoalNode = isGoalNode;
 		this.hasPrevious = hasPrevious;
 		subNodeArray = new ArrayList<SubNode>();
-		neighberNodeArray = new ArrayList<Node>();
+		neighborNodeArray = new ArrayList<Node>();
+		
+		neighborMap = new HashMap<String, Integer>();
+		
+	}
+	
+	public void initializeSet(){
+		set = neighborMap.entrySet();
+		iterator = set.iterator();
 		
 	}
 
@@ -77,11 +93,19 @@ public class Node {
 	}
 
 	public ArrayList<Node> getNeighberNodeArray() {
-		return neighberNodeArray;
+		return neighborNodeArray;
 	}
 
 	public void setNeighberNodeArray(ArrayList<Node> neighberNodeArray) {
-		this.neighberNodeArray = neighberNodeArray;
+		this.neighborNodeArray = neighberNodeArray;
+	}
+
+	public HashMap getNeighborMap() {
+		return neighborMap;
+	}
+
+	public void setNeighborMap(HashMap neighborMap) {
+		this.neighborMap = neighborMap;
 	}
 	
 	

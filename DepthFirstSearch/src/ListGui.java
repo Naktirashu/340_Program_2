@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Map;
 import java.util.Stack;
 import java.awt.event.ActionEvent;
 
@@ -42,6 +43,8 @@ public class ListGui extends JFrame {
 	private int incrementLevel = 0;
 	
 	private int currentDepth = 0;
+
+	private int subNodeValue = 0;
 
 	/**
 	 * Launch the application.
@@ -163,6 +166,7 @@ public class ListGui extends JFrame {
 		incrementTextField.setColumns(10);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void parseData(File selectedFile) {
 		try{
 			BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(selectedFile)));
@@ -283,6 +287,8 @@ public class ListGui extends JFrame {
 					System.out.println("SubNodeArray Length: " + node.getSubNodeArray().size());
 					for(SubNode subNode : node.getSubNodeArray()) {
 						//Find the Node object that matches the subNode and add the ref to the neighberNodeArray
+						node.neighborMap.put(subNode.getName(), subNode.getWeight());
+						
 						for(int j = 0; j< nodeList.size(); j++){
 							if(subNode.getName().equals(nodeList.get(j).getName())){
 								node.getNeighberNodeArray().add(nodeList.get(j));								
@@ -290,6 +296,17 @@ public class ListGui extends JFrame {
 							
 						}
 					}
+					node.initializeSet();
+					
+					//Print out the HashMap
+					System.out.println("Node: " + node.getName());
+					while(node.iterator.hasNext()){
+						Map.Entry me = (Map.Entry)node.iterator.next();
+						System.out.print("MAP " + me.getKey() + ": ");
+						System.out.println(me.getValue());
+					}
+					
+					//Print out the neighbor list
 					for(int j = 0; j < node.getNeighberNodeArray().size(); j++){
 						System.out.println("Node " + node.getName() + " Neighbor List ["+ j + "]: " + node.getNeighberNodeArray().get(j).getName());						
 					}
@@ -391,17 +408,31 @@ public class ListGui extends JFrame {
 	private void iterativeDeepeningSearch() {
 		System.out.println("Iterative Deepening Search: ");
 		
-		for (Node node : nodeList) {
+		for (Node node : nodeList.get(0).getNeighberNodeArray()) {
 			if( !node.isVisted()){
 				node.setVisted(true);
 				//System.out.println("Setting visted for Node: " + node.getName());
+				System.out.print("S ");
+				
+				for(int i =0; i < nodeList.get(0).getNeighberNodeArray().size() ; i++ ){
+					if (node.getName().equals(nodeList.get(0).getSubNodeArray().get(i).getName())){
+						currentDepth = nodeList.get(0).getSubNodeArray().get(i).getWeight();
+						
+					}
+				}
+				
 				iterativeDeepeningWithStack(node);
+				System.out.println("\n");
+				
+				currentDepth = 0;
 			}
 		}
+		
+		//iterativeDeepeningWithStack(nodeList.get(0));
 		//FIXME may want to take this out later
-		for (Node node2 : nodeList) {
+		/*for (Node node2 : nodeList) {
 			node2.setVisted(false);	
-		}
+		}*/
 	}
 
 	/**
@@ -420,18 +451,34 @@ public class ListGui extends JFrame {
 			
 			if(actualNode.isGoalNode()){
 				System.out.println("(Goal!)");
+				break;
 				
 			}
 			
 			for (Node node2 : node.getNeighberNodeArray()) {
+			//Node node2 = actualNode.getNeighberNodeArray().get(0);
 				//System.out.println("Node2: " + node2.getName());
-				if(!node2.isVisted()){
-					System.out.println("Calling iterativeDeepening with: " + node2.getName());
-					iterativeDeepeningWithStack(node2);
+				if(!node2.isVisted() && (currentDepth < initialDepth)){
+					//System.out.println("Calling iterativeDeepening with: " + node2.getName());
+					
+					for(int i = 0 ; i < actualNode.getSubNodeArray().size(); i++){
+						if (node2.getName().equals(actualNode.getSubNodeArray().get(i).getName())){
+							
+							//System.out.println("SubNode " + node2.getName() + " value =" + actualNode.getSubNodeArray().get(i).getWeight());
+							subNodeValue  = actualNode.getSubNodeArray().get(i).getWeight();
+						}
+					}
+					
+					//System.out.println((subNodeValue + currentDepth) + " <= " + initialDepth );
+					if((subNodeValue + currentDepth) <= initialDepth){
+						currentDepth += subNodeValue;
+						iterativeDeepeningWithStack(node2);						
+					}
 					//node2.setVisted(true);
 					//stack.push(node2);
 				}
 			}
+			
 		}
 		
 	}
