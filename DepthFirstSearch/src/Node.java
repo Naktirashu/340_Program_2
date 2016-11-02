@@ -12,10 +12,6 @@ public class Node {
 	private String name = "";
 	private ArrayList<SubNode> subNodeArray;
 	
-	HashMap neighborMap;
-	Set set;
-	Iterator iterator;
-	
 	private ArrayList<Node> neighborNodeArray;
 	
 	private boolean isStartNode = false;
@@ -32,17 +28,10 @@ public class Node {
 		this.isGoalNode = isGoalNode;
 		this.hasPrevious = hasPrevious;
 		subNodeArray = new ArrayList<SubNode>();
-		neighborNodeArray = new ArrayList<Node>();
-		
-		neighborMap = new HashMap<String, Integer>();
+		neighborNodeArray = new ArrayList<Node>();		
 		
 	}
-	
-	public void initializeSet(){
-		set = neighborMap.entrySet();
-		iterator = set.iterator();
-		
-	}
+
 
 	public String getName() {
 		return name;
@@ -100,14 +89,6 @@ public class Node {
 		this.neighborNodeArray = neighberNodeArray;
 	}
 
-	public HashMap getNeighborMap() {
-		return neighborMap;
-	}
-
-	public void setNeighborMap(HashMap neighborMap) {
-		this.neighborMap = neighborMap;
-	}
-	
 	
 	
 }

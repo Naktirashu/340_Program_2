@@ -48,6 +48,11 @@ public class ListGui extends JFrame {
 
 	private boolean goalReached = false;
 
+	private boolean tmpGoalReached = false;
+
+	private String goalName = "";
+
+	private boolean firstRun = true;
 	/**
 	 * Launch the application.
 	 */
@@ -168,7 +173,7 @@ public class ListGui extends JFrame {
 		incrementTextField.setColumns(10);
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	private void parseData(File selectedFile) {
 		try{
 			BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(selectedFile)));
@@ -289,7 +294,6 @@ public class ListGui extends JFrame {
 					System.out.println("SubNodeArray Length: " + node.getSubNodeArray().size());
 					for(SubNode subNode : node.getSubNodeArray()) {
 						//Find the Node object that matches the subNode and add the ref to the neighberNodeArray
-						node.neighborMap.put(subNode.getName(), subNode.getWeight());
 						
 						for(int j = 0; j< nodeList.size(); j++){
 							if(subNode.getName().equals(nodeList.get(j).getName())){
@@ -298,16 +302,8 @@ public class ListGui extends JFrame {
 							
 						}
 					}
-					node.initializeSet();
-					
-					//Print out the HashMap
-					System.out.println("Node: " + node.getName());
-					while(node.iterator.hasNext()){
-						Map.Entry me = (Map.Entry)node.iterator.next();
-						System.out.print("MAP " + me.getKey() + ": ");
-						System.out.println(me.getValue());
-					}
-					
+				
+				
 					//Print out the neighbor list
 					for(int j = 0; j < node.getNeighberNodeArray().size(); j++){
 						System.out.println("Node " + node.getName() + " Neighbor List ["+ j + "]: " + node.getNeighberNodeArray().get(j).getName());						
@@ -360,7 +356,7 @@ public class ListGui extends JFrame {
 	 * Performs Depth FIrst Search (Source from : YouTUbe Balazs Hoczer @ https://www.youtube.com/watch?v=knbGy2tED-Y)
 	 */
 	private void depthFirsthSearch() {
-		System.out.println("Depth First Search: ");
+		System.out.println("\nDepth First Search: ");
 		
 		for (Node node : nodeList) {
 			if( !node.isVisted()){
@@ -408,8 +404,13 @@ public class ListGui extends JFrame {
 	 * Performs Iterative Deepening Depth First Search
 	 */
 	private void iterativeDeepeningSearch() {
-		System.out.println("Iterative Deepening Search: ");
+		if(firstRun){
+			System.out.println("\nIterative Deepening Search: ");			
+		}
 		
+		firstRun = false;
+		
+		System.out.println("Depth bound = " + initialDepth);
 		for (Node node : nodeList.get(0).getNeighberNodeArray()) {
 			if( !node.isVisted()){
 				node.setVisted(true);
@@ -422,24 +423,38 @@ public class ListGui extends JFrame {
 						
 					}
 				}
-				
 				iterativeDeepeningWithStack(node);
 				
-				if(!goalReached){
+				if(!tmpGoalReached){
 					System.out.print("(X)");
 				}
-				goalReached= false;
+				tmpGoalReached = false;
 				
 				currentDepth = 0;
 			}
 			System.out.print("\n");
 		}
 		
-		//iterativeDeepeningWithStack(nodeList.get(0));
-		//FIXME may want to take this out later
-		/*for (Node node2 : nodeList) {
-			node2.setVisted(false);	
-		}*/
+		if(!goalReached){
+			System.out.println("Search Failed unnaturally\n");
+			initialDepth += incrementLevel;
+			
+			currentDepth = 0;
+			//reset nodes
+			for (Node node : nodeList) {
+				node.setVisted(false);
+			}
+			iterativeDeepeningSearch();
+			
+		}else{
+			System.out.println("Search succeeded. Goal node found = " + goalName + "\n");
+			//reset nodes
+			for (Node node : nodeList) {
+				node.setVisted(false);
+			}
+		}
+	
+	
 	}
 
 	/**
@@ -461,10 +476,12 @@ public class ListGui extends JFrame {
 			if(actualNode.isGoalNode()){
 				System.out.println("(Goal!)");
 				goalReached = true;
+				tmpGoalReached = true;
+				goalName = actualNode.getName();
 				//System.out.print("\n");
 				
 			}
-			if(!goalReached){
+			if(!tmpGoalReached){
 				
 				for (Node node2 : node.getNeighberNodeArray()) {
 					//Node node2 = actualNode.getNeighberNodeArray().get(0);
@@ -492,6 +509,7 @@ public class ListGui extends JFrame {
 				}
 				
 			}
+			
 			
 		}
 		
