@@ -1,11 +1,11 @@
 
 public class SubNode {
-	//test comment
+	
 	private String name = "";
 	private int weight = 0;
 
 	private boolean isGoalNode = false;
-	
+
 	private boolean wasVisited = false;
 
 	public SubNode(String name, int weight) {
@@ -44,6 +44,5 @@ public class SubNode {
 	public void setWasVisited(boolean wasVisited) {
 		this.wasVisited = wasVisited;
 	}
-	
-	
+
 }

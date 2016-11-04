@@ -3,23 +3,22 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-//example on building the adj list
+//loosely based on example on building the adjacency list
 //http://stackoverflow.com/questions/14783831/java-implementation-of-adjacency-list
 
-//test comment
+
 public class Node {
 
 	private String name = "";
 	private ArrayList<SubNode> subNodeArray;
-	
+
 	private ArrayList<Node> neighborNodeArray;
-	
+
 	private boolean isStartNode = false;
 	private boolean isGoalNode = false;
-	
+
 	private boolean hasPrevious = false;
-	
-	
+
 	private boolean visted = false;
 
 	public Node(String name, boolean isStartNode, boolean isGoalNode, boolean hasPrevious) {
@@ -28,10 +27,9 @@ public class Node {
 		this.isGoalNode = isGoalNode;
 		this.hasPrevious = hasPrevious;
 		subNodeArray = new ArrayList<SubNode>();
-		neighborNodeArray = new ArrayList<Node>();		
-		
-	}
+		neighborNodeArray = new ArrayList<Node>();
 
+	}
 
 	public String getName() {
 		return name;
@@ -89,6 +87,4 @@ public class Node {
 		this.neighborNodeArray = neighberNodeArray;
 	}
 
-	
-	
 }

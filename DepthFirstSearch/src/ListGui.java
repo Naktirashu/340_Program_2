@@ -374,7 +374,7 @@ public class ListGui extends JFrame {
 	}
 
 	/**
-	 * Performs Depth FIrst Search (Source from : YouTUbe Balazs Hoczer @
+	 * Performs Depth First Search (Source from : YouTUbe Balazs Hoczer @
 	 * https://www.youtube.com/watch?v=knbGy2tED-Y) Does not print to file
 	 */
 	private void depthFirsthSearch() {
@@ -388,14 +388,14 @@ public class ListGui extends JFrame {
 				dfsWithStack(node);
 			}
 		}
-		// FIXME may want to take this out later
+		//Reset the nodes
 		for (Node node2 : nodeList) {
 			node2.setVisted(false);
 		}
 	}
 
 	/**
-	 * Performs Depth FIrst Search (Source from : YouTUbe Balazs Hoczer @
+	 * Performs Depth First Search (Source from : YouTUbe Balazs Hoczer @
 	 * https://www.youtube.com/watch?v=knbGy2tED-Y) Does not print to file
 	 */
 	private void dfsWithStack(Node node) {
@@ -417,8 +417,7 @@ public class ListGui extends JFrame {
 
 				if (!node2.isVisted()) {
 					dfsWithStack(node2);
-					// node2.setVisted(true);
-					// stack.push(node2);
+					
 				}
 			}
 		}
@@ -429,30 +428,31 @@ public class ListGui extends JFrame {
 	 * Performs Iterative Deepening Depth First Search Prints to File
 	 */
 	private void iterativeDeepeningSearch() {
-		
-		if(initialDepth == 0 && incrementLevel == 0){
+
+		//If both are zero, print the start node and exit
+		if (initialDepth == 0 && incrementLevel == 0) {
 			writer.println("\nIterative Deepening Search: \n");
 			writer.println("Depth bound = " + initialDepth + "\n");
 			writer.println("S (X)");
 			writer.close();
 			return;
 		}
-		
+		//when its the first Run , print the header
 		if (firstRun) {
 			System.out.println("\nIterative Deepening Search: \n");
 			writer.println("\nIterative Deepening Search: \n");
-			
-		}
 
+		}
+		//reset first run
 		firstRun = false;
 
 		System.out.println("Depth bound = " + initialDepth + "\n");
 		writer.println("Depth bound = " + initialDepth + "\n");
-		
-		if(initialDepth == 0){
+
+		if (initialDepth == 0) {
 			System.out.println("S (X)\n");
 			writer.println("S (X)\n");
-		}else{
+		} else {
 			for (Node node : nodeList.get(0).getNeighberNodeArray()) {
 				if (!node.isVisted()) {
 					node.setVisted(true);
@@ -460,33 +460,33 @@ public class ListGui extends JFrame {
 					// node.getName());
 					System.out.print("S ");
 					writer.print("S ");
-					
+
 					for (int i = 0; i < nodeList.get(0).getNeighberNodeArray().size(); i++) {
 						if (node.getName().equals(nodeList.get(0).getSubNodeArray().get(i).getName())) {
 							currentDepth = nodeList.get(0).getSubNodeArray().get(i).getWeight();
-							
+
 						}
 					}
 					iterativeDeepeningWithStack(node);
-					
+
 					if (!tmpGoalReached) {
 						System.out.print("(X)\n");
 						writer.append("(X)\n");
-						
+
 					}
 					tmpGoalReached = false;
-					
+
 					currentDepth = 0;
 				}
 				System.out.print("\n");
 				writer.append("\n");
 			}
 		}
-
+		//We didnt find a goal node, reset depth and visited booleans, add increment and start again
 		if (!goalReached) {
 			System.out.println("Search Failed unnaturally\n");
 			writer.println("Search Failed unnaturally\n");
-			
+
 			initialDepth += incrementLevel;
 
 			currentDepth = 0;
@@ -497,9 +497,9 @@ public class ListGui extends JFrame {
 			iterativeDeepeningSearch();
 
 		} else {
+			//We found a goal
 			System.out.println("Search succeeded. Goal node found = " + goalName + "\n");
 			writer.println("Search succeeded. Goal node found = " + goalName + "\n");
-			
 
 			writer.close();
 
@@ -524,22 +524,25 @@ public class ListGui extends JFrame {
 			Node actualNode = stack.pop();
 			// System.out.println("Setting actualNode to :" +
 			// actualNode.getName());
+			
+			//if node is within the depth range, add it
 			if (currentDepth <= initialDepth) {
 				System.out.print(actualNode.getName() + " ");
 				writer.append(actualNode.getName() + " ");
-				
-			}
 
+			}
+			//is it the goal?
 			if (actualNode.isGoalNode()) {
 				System.out.print("(Goal!)\n");
 
 				writer.append("(Goal!)\n");
-				
+
 				goalReached = true;
 				tmpGoalReached = true;
 				goalName = actualNode.getName();
 
 			}
+			//the node is not a goal, continue on
 			if (!tmpGoalReached) {
 
 				for (Node node2 : node.getNeighberNodeArray()) {
@@ -565,16 +568,10 @@ public class ListGui extends JFrame {
 							currentDepth += subNodeValue;
 							iterativeDeepeningWithStack(node2);
 						}
-
-						// node2.setVisted(true);
-						// stack.push(node2);
 					}
 				}
-
 			}
-
 		}
-
 	}
 
 	/**
@@ -591,7 +588,6 @@ public class ListGui extends JFrame {
 		return fileName;
 		// saveToFile(fileName + "_search.txt", searchSolutionArray);
 	}
-
 
 	public File getSelectedFile() {
 		return selectedFile;
